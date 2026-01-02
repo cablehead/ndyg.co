@@ -13,7 +13,7 @@ def do_404 [req: record] {
       let name = $req.path | path basename
       let md = "./pages/" + $name + ".md"
       if ($md | path exists) {
-        open $md | md2html | {content: $in} | to json -r | minijinja-cli -f json ./html/page.html -
+        {__html: (open $md)} | .md | get __html | {content: $in} | to json -r | minijinja-cli -f json ./html/page.html -
       } else {
         do_404 $req
       }
